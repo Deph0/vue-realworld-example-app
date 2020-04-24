@@ -1,17 +1,12 @@
-import { TagsService, ArticlesService } from "@/common/api.service";
-import { FETCH_ARTICLES, FETCH_TAGS } from "./actions.type";
-import {
-  FETCH_START,
-  FETCH_END,
-  SET_TAGS,
-  UPDATE_ARTICLE_IN_LIST
-} from "./mutations.type";
+import { ArticlesService } from "@/common/api.service";
+import { FETCH_ARTICLES } from "./actions.type";
+import { FETCH_START, FETCH_END, SET_QUERY } from "./mutations.type";
 
 const state = {
-  tags: [],
   articles: [],
   isLoading: true,
-  articlesCount: 0
+  articlesCount: 0,
+  query: ""
 };
 
 const getters = {
@@ -24,8 +19,8 @@ const getters = {
   isLoading(state) {
     return state.isLoading;
   },
-  tags(state) {
-    return state.tags;
+  query(state) {
+    return state.query;
   }
 };
 
@@ -39,43 +34,21 @@ const actions = {
       .catch(error => {
         throw new Error(error);
       });
-  },
-  [FETCH_TAGS]({ commit }) {
-    return TagsService.get()
-      .then(({ data }) => {
-        commit(SET_TAGS, data.tags);
-      })
-      .catch(error => {
-        throw new Error(error);
-      });
   }
 };
 
-/* eslint no-param-reassign: ["error", { "props": false }] */
 const mutations = {
   [FETCH_START](state) {
     state.isLoading = true;
   },
-  [FETCH_END](state, { articles, articlesCount }) {
-    state.articles = articles;
-    state.articlesCount = articlesCount;
+  [FETCH_END](state, { results, total_results }) {
+    state.articles = results;
+    state.articlesCount = total_results;
     state.isLoading = false;
   },
-  [SET_TAGS](state, tags) {
-    state.tags = tags;
-  },
-  [UPDATE_ARTICLE_IN_LIST](state, data) {
-    state.articles = state.articles.map(article => {
-      if (article.slug !== data.slug) {
-        return article;
-      }
-      // We could just return data, but it seems dangerous to
-      // mix the results of different api calls, so we
-      // protect ourselves by copying the information.
-      article.favorited = data.favorited;
-      article.favoritesCount = data.favoritesCount;
-      return article;
-    });
+  [SET_QUERY](state, query) {
+    state.query = query;
+    // console.log(state.query);
   }
 };
 

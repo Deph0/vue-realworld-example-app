@@ -2,13 +2,15 @@
   <footer>
     <div class="container">
       <router-link class="logo-font" :to="{ name: 'home', params: {} }">
-        conduit
+        TheTVDB
       </router-link>
       <span class="attribution">
-        An interactive learning project from
-        <a rel="noopener noreferrer" target="blank" href="https://thinkster.io"
-          >Thinkster</a
-        >. Code &amp; design licensed under MIT.
+        <br />
+        <!-- An interactive learning project from Thinkster.io.  -->
+        Code & design licensed under MIT.
+        <br />
+        TV information and images are provided by TheTVDB.com, but we are not
+        endorsed or certified by TheTVDB.com or its affiliates.
       </span>
     </div>
   </footer>

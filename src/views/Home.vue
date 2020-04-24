@@ -2,8 +2,15 @@
   <div class="home-page">
     <div class="banner">
       <div class="container">
-        <h1 class="logo-font">conduit</h1>
-        <p>A place to share your knowledge.</p>
+        <h1 class="logo-font">TheTVDB</h1>
+        <form v-on:submit.prevent="searchMovies">
+          <input
+            v-model="query"
+            type="text"
+            class="form-control"
+            placeholder="Search for a movie..."
+          />
+        </form>
       </div>
     </div>
     <div class="container page">
@@ -11,15 +18,6 @@
         <div class="col-md-9">
           <div class="feed-toggle">
             <ul class="nav nav-pills outline-active">
-              <li v-if="isAuthenticated" class="nav-item">
-                <router-link
-                  :to="{ name: 'home-my-feed' }"
-                  class="nav-link"
-                  active-class="active"
-                >
-                  Your Feed
-                </router-link>
-              </li>
               <li class="nav-item">
                 <router-link
                   :to="{ name: 'home' }"
@@ -27,30 +25,12 @@
                   class="nav-link"
                   active-class="active"
                 >
-                  Global Feed
-                </router-link>
-              </li>
-              <li class="nav-item" v-if="tag">
-                <router-link
-                  :to="{ name: 'home-tag', params: { tag } }"
-                  class="nav-link"
-                  active-class="active"
-                >
-                  <i class="ion-pound"></i> {{ tag }}
+                  <!-- Global Feed -->
                 </router-link>
               </li>
             </ul>
           </div>
           <router-view></router-view>
-        </div>
-        <div class="col-md-3">
-          <div class="sidebar">
-            <p>Popular Tags</p>
-            <div class="tag-list">
-              <RwvTag v-for="(tag, index) in tags" :name="tag" :key="index">
-              </RwvTag>
-            </div>
-          </div>
         </div>
       </div>
     </div>
@@ -58,22 +38,44 @@
 </template>
 
 <script>
-import { mapGetters } from "vuex";
-import RwvTag from "@/components/VTag";
-import { FETCH_TAGS } from "@/store/actions.type";
+import { FETCH_ARTICLES } from "@/store/actions.type";
 
 export default {
   name: "home",
-  components: {
-    RwvTag
-  },
-  mounted() {
-    this.$store.dispatch(FETCH_TAGS);
-  },
+  // data() {
+  //    return {
+  //      queryValue: this.query
+  //    }
+  // },
+  // created() {
+  //   this.queryValue = this.$store.state.query;
+  // },
   computed: {
-    ...mapGetters(["isAuthenticated", "tags"]),
-    tag() {
-      return this.$route.params.tag;
+    query: {
+      get() {
+        // console.log("get query computed", this.$store.getters.query);
+        return this.$store.getters.query;
+      },
+      set(value) {
+        // console.log("set query computer", value);
+        this.$store.commit("setQuery", value);
+      }
+    }
+  },
+  methods: {
+    searchMovies() {
+      // console.log("searchmovie", this.$store.getters.query);
+      let filters = {
+        type: "all",
+        filters: {}
+      };
+      if (this.$store.getters.query) {
+        filters = {
+          type: "filter",
+          filters: { query: this.$store.getters.query }
+        };
+      }
+      this.$store.dispatch(FETCH_ARTICLES, filters);
     }
   }
 };

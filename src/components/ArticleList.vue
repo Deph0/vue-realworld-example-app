@@ -33,22 +33,10 @@ export default {
       required: false,
       default: "all"
     },
-    author: {
-      type: String,
-      required: false
-    },
-    tag: {
-      type: String,
-      required: false
-    },
-    favorited: {
-      type: String,
-      required: false
-    },
     itemsPerPage: {
       type: Number,
       required: false,
-      default: 10
+      default: 20
     }
   },
   data() {
@@ -58,22 +46,14 @@ export default {
   },
   computed: {
     listConfig() {
-      const { type } = this;
       const filters = {
+        page: this.currentPage,
         offset: (this.currentPage - 1) * this.itemsPerPage,
-        limit: this.itemsPerPage
+        limit: this.itemsPerPage,
+        query: this.query
       };
-      if (this.author) {
-        filters.author = this.author;
-      }
-      if (this.tag) {
-        filters.tag = this.tag;
-      }
-      if (this.favorited) {
-        filters.favorited = this.favorited;
-      }
       return {
-        type,
+        type: this.query ? "filter" : this.type,
         filters
       };
     },
@@ -85,7 +65,7 @@ export default {
         ...Array(Math.ceil(this.articlesCount / this.itemsPerPage)).keys()
       ].map(e => e + 1);
     },
-    ...mapGetters(["articlesCount", "isLoading", "articles"])
+    ...mapGetters(["articlesCount", "isLoading", "articles", "query"])
   },
   watch: {
     currentPage(newValue) {
@@ -93,18 +73,6 @@ export default {
       this.fetchArticles();
     },
     type() {
-      this.resetPagination();
-      this.fetchArticles();
-    },
-    author() {
-      this.resetPagination();
-      this.fetchArticles();
-    },
-    tag() {
-      this.resetPagination();
-      this.fetchArticles();
-    },
-    favorited() {
       this.resetPagination();
       this.fetchArticles();
     }

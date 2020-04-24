@@ -1,5 +1,7 @@
 <template>
-  <div class="home-global"><RwvArticleList type="all" /></div>
+  <div class="home-global">
+    <RwvArticleList type="all" />
+  </div>
 </template>
 <script>
 import RwvArticleList from "@/components/ArticleList";
