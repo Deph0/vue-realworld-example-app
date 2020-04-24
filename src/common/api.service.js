@@ -13,7 +13,7 @@ const ApiService = {
     return Vue.axios
       .get(resource, params)
       .then(x => {
-        console.log("data-query-api", x);
+        // console.log("data-query-api", x);
         return x;
       })
       .catch(error => {
@@ -25,7 +25,7 @@ const ApiService = {
     return Vue.axios
       .get(`${resource}/${slug}`, params)
       .then(x => {
-        console.log("data-get-api", x);
+        // console.log("data-get-api", x);
         return x;
       })
       .catch(error => {
@@ -57,7 +57,7 @@ export default ApiService;
 const api_key = "b4ec65fed8698e3d58edad35a21799de";
 export const ArticlesService = {
   query(type, paramsList) {
-    console.log("[articleservice]", arguments);
+    // console.log("[articleservice]", arguments);
     let action = "";
     if (type === "all") {
       action = "/discover/movie";
