@@ -1,7 +1,7 @@
 <template>
-  <div>
-    <div v-if="isLoading" class="article-preview">Loading articles...</div>
-    <div v-else>
+  <div v-if="isLoading" class="article-preview">Loading articles...</div>
+  <div v-else class="container">
+    <div class="row">
       <div v-if="articles.length === 0" class="article-preview">
         No articles are here... yet.
       </div>
@@ -10,7 +10,12 @@
         :article="article"
         :key="article.title + index"
       />
-      <VPagination :pages="pages" :currentPage.sync="currentPage" />
+    </div>
+    <div class="row">
+      <div class="col-12">
+        <hr />
+        <VPagination :pages="pages" :currentPage.sync="currentPage" />
+      </div>
     </div>
   </div>
 </template>

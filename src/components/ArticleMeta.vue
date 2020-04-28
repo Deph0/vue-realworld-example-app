@@ -1,5 +1,11 @@
 <template>
   <div class="article-meta">
+    <div class="info">
+      <h1 class="text-truncate" v-text="article.title" />
+      <p class="date text-truncate">
+        Released {{ article.release_date | date }}
+      </p>
+    </div>
     <img
       v-if="article.poster_path != null"
       class="poster"
@@ -22,10 +28,6 @@
       srcset="//placehold.it/300x450 1x, //placehold.it/600x900 2x"
       :alt="article.title"
     />
-
-    <div class="info">
-      <span class="date">Released {{ article.release_date | date }}</span>
-    </div>
   </div>
 </template>
 
@@ -44,11 +46,14 @@ export default {
 <style>
 /* override the template css */
 .article-meta img {
-  height: auto !important;
-  width: auto !important;
+  height: 50vh;
+  width: auto;
 }
-
 .article-meta .info {
-  display: block !important;
+  display: block;
+}
+.article-meta .info .date {
+  max-width: initial;
+  padding-bottom: 2vh;
 }
 </style>

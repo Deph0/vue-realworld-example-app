@@ -1,7 +1,7 @@
 import Vue from "vue";
 import axios from "axios";
 import VueAxios from "vue-axios";
-import { API_URL } from "@/common/config";
+import { API_URL, API_TOKEN } from "@/common/config";
 
 const ApiService = {
   init() {
@@ -54,7 +54,6 @@ const ApiService = {
 
 export default ApiService;
 
-const api_key = "b4ec65fed8698e3d58edad35a21799de";
 export const ArticlesService = {
   query(type, paramsList) {
     // console.log("[articleservice]", arguments);
@@ -66,7 +65,7 @@ export const ArticlesService = {
     return ApiService.query(action, {
       params: {
         ...paramsList,
-        api_key,
+        api_key: API_TOKEN,
         sort_by: "vote_count.desc"
       }
     });
@@ -74,7 +73,7 @@ export const ArticlesService = {
   get(id) {
     return ApiService.get("movie", id, {
       params: {
-        api_key
+        api_key: API_TOKEN
       }
     });
   }
